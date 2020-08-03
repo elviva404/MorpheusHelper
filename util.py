@@ -17,6 +17,28 @@ async def is_teamler(member: Member) -> bool:
     return await PermissionLevel.SUPPORTER.check_permissions(member)
 
 
+def zip_default(*args, default=None):
+    length = max(map(len, args))
+    return zip(*[[*a] + [default] * (length - len(a)) for a in args])
+
+
+async def update_reactions(message: Message, reactions: List[str]):
+    if message.reactions and (not reactions or message.reactions[0].emoji != reactions[0]):
+        await message.clear_reactions()
+    remove = []
+    add = []
+    for o, n in zip_default([reaction.emoji for reaction in message.reactions], reactions):
+        if o != n or remove or add:
+            if o:
+                remove.append(o)
+            if n:
+                add.append(n)
+    for emoji in remove:
+        await message.clear_reaction(emoji)
+    for emoji in add:
+        await message.add_reaction(emoji)
+
+
 async def send_to_changelog(guild: Guild, message: str):
     channel: Optional[TextChannel] = guild.get_channel(await Settings.get(int, "logging_changelog", -1))
     if channel is not None:
@@ -37,9 +59,16 @@ async def attachment_to_file(attachment: Attachment) -> File:
     return File(file, filename=attachment.filename, spoiler=attachment.is_spoiler())
 
 
-async def read_normal_message(bot: Bot, channel: TextChannel, author: Member) -> Tuple[str, List[File]]:
+async def get_files_from_message(message: Message) -> List[File]:
+    return [await attachment_to_file(attachment) for attachment in message.attachments]
+
+
+async def read_normal_message(bot: Bot, channel: TextChannel, author: Member, delete=False) -> Tuple[str, List[File]]:
     msg: Message = await bot.wait_for("message", check=lambda m: m.channel == channel and m.author == author)
-    return msg.content, [await attachment_to_file(attachment) for attachment in msg.attachments]
+    files: List[File] = await get_files_from_message(msg)
+    if delete:
+        await msg.delete()
+    return msg.content, files
 
 
 async def read_embed(bot: Bot, channel: TextChannel, author: Member) -> Embed:

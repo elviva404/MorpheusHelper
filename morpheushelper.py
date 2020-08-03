@@ -36,6 +36,7 @@ from cogs.info import InfoCog
 from cogs.invites import InvitesCog
 from cogs.logging import LoggingCog
 from cogs.mediaonly import MediaOnlyCog
+from cogs.messages import MessagesCog
 from cogs.metaquestion import MetaQuestionCog
 from cogs.mod import ModCog
 from cogs.news import NewsCog
@@ -279,5 +280,6 @@ register_cogs(
     RedditCog,
     AutoModCog,
     VerificationCog,
+    MessagesCog,
 )
 bot.run(os.environ["TOKEN"])

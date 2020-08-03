@@ -616,3 +616,24 @@ verification_role_already_set: Role already set.
 verification_role_not_set: Role not set.
 verification_reverse_role_not_assigned: Verification failed!
 disabled: ":x: Disabled"
+
+# message dialog
+compose_message: Compose Message
+msg_dlg_intro: |
+  Use the reactions below to compose the message:
+  :pencil: Content
+  :file_folder: Files
+  :clipboard: Embed
+  :x: Cancel
+msg_dlg_send: ":white_check_mark: Send"
+msg_dlg_embed: |
+  Use the reactions below to build the embed:
+  :label: Title
+  :pencil: Description
+  :paintbrush: Color
+  :arrow_left: Go Back
+  :wastebasket: Remove Embed
+preview: Preview
+author: Author
+send_file: Now send me a message with the file you want to attach.
+send_embed_color: Ok, now send me the hex code of the embed color!
