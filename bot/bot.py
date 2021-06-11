@@ -104,6 +104,7 @@ load_cogs(
     DiscordpyDocumentationCog(),
     RedditCog(),
     RunCodeCog(),
+    WikipediaCog(),
 
     # General
     BeTheProfessionalCog(),
